@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderfood.springboot.mapper.ChartMapper">
+    <insert id="insert">
+        insert into chart(question,answer) values(#{question},#{answer})
+    </insert>
+    <delete id="deleteByCustomerId">
+        delete  from  chart where question=#{customerid}
+    </delete>
+
+    <select id="findPage" resultType="com.orderfood.springboot.entity.Chart">
+    select distinct * from  chart left join customer on customer.id=chart.question left join user on user.id=chart.answer where question=#{question} order by chart.id desc
+    </select>
+    <select id="findAnswer" resultType="com.orderfood.springboot.entity.Chart">
+        select distinct * from  chart left join customer on customer.id=chart.question left join user on user.id=chart.answer where answer=#{answer} order by chart.id desc
+    </select>
+    <select id="findByAnswerAndQuestion" resultType="java.lang.Integer">
+        select count(*)from chart where question=#{question} and answer=#{answer}
+    </select>
+</mapper>

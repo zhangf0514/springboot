@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderfood.springboot.mapper.ShowAllMapper">
+    <select id="findPageByName" resultType="com.orderfood.springboot.entity.ShowAll">
+        select * from product
+        left join user on product.userid=user.id
+        left join shop on product.shopid=shop.id
+        left join item on product.itemid=item.itemid
+        <where>
+            <if test="name!=null and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+    <select id="findPage" resultType="com.orderfood.springboot.entity.ShowAll">
+        select * from product
+            left join user on product.userid=user.id
+            left join shop on product.shopid=shop.id
+            left join item on product.itemid=item.itemid
+        <where>
+            <if test="name!=null and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="itemid!=null and itemid!=''">
+                and product.itemid =#{itemid}
+            </if>
+            <if test="userid!=null and userid!=''">
+                and product.userid =#{userid}
+            </if>
+            <if test="shopid!=null and shopid!=''">
+            and product.shopid =#{shopid}
+            </if>
+        </where>
+    </select>
+  <!--  <select id="getProductByCustomerId" resultType="com.orderfood.springboot.entity.ShowAll">
+        select * from product
+        left join user on product.userid=user.id
+        left join shop on product.shopid=shop.id
+        left join item on product.itemid=item.itemid
+        left join car on  product.id=car.productid
+        where product.userid=#{id}
+    </select>-->
+    <select id="getProductByCustomerId" resultType="com.orderfood.springboot.entity.ShowAll">
+        select * from car
+        left join product on car.productid=product.id
+        left join shop on car.shopid=shop.id
+        left join customer on car.customerid=customer.id
+        where car.customerid=#{id}
+    </select>
+</mapper>

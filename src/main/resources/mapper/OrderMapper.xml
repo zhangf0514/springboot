@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderfood.springboot.mapper.OrderMapper">
+    <insert id="saveOrder">
+        INSERT INTO `order` (orderuid,ordersid,orderpid,orderstate) VALUES (#{uid},#{sid},#{pid},true)
+    </insert>
+    <insert id="fast">
+        INSERT INTO `order` (orderuid,ordersid,orderpid,orderstate) VALUES (#{uid},#{sid},#{pid},true)
+    </insert>
+
+    <select id="getSelectProduct" resultType="com.orderfood.springboot.entity.Car">
+        select * from car where customerid=#{id} and isselect=true
+    </select>
+    <select id="findOrderList" resultType="com.orderfood.springboot.entity.OrderList">
+        select * from `order`
+        LEFT JOIN customer ON `order`.orderuid=customer.id
+        LEFT JOIN shop ON `order`.ordersid=shop.id
+        LEFT JOIN product ON `order`.orderpid=product.id
+        where `order`.orderuid=#{id}
+    </select>
+    <select id="findPage" resultType="com.orderfood.springboot.entity.OrderList">
+        select * from `order`
+                          LEFT JOIN customer ON `order`.orderuid=customer.id
+                          LEFT JOIN shop ON `order`.ordersid=shop.id
+                          LEFT JOIN product ON `order`.orderpid=product.id
+        <where>
+            <if test="customername!=null and customername!=''">
+                and customer.customername like concat('%',#{customername},'%')
+            </if>
+            <if test="phone!=null and phone!=''">
+                and customer.phone like concat('%',#{phone},'%')
+            </if>
+                and `order`.ordersid=#{ordersid}
+        </where>
+
+    </select>
+</mapper>
